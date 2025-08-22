@@ -1,9 +1,16 @@
-import { Server } from "socket.io";
-import type {Socket} from "socket.io";
-import { createServer } from "node:http";
-import pkg, { Client } from "whatsapp-web.js";
-import type { Message } from "whatsapp-web.js";
-import fs from "fs";
+// import { Server } from "socket.io";
+// import type {Socket} from "socket.io";
+// import { createServer } from "node:http";
+// import pkg, { Client } from "whatsapp-web.js";
+// import type { Message } from "whatsapp-web.js";
+// import fs from "fs";
+
+const {Server,Socket} = require("socket.io");
+const {createServer}= require("node:http");
+const {Client,LocalAuth,Message} = require("whatsapp-web.js");
+const fs = require("fs");
+
+
 
 
 
@@ -24,17 +31,11 @@ const FgBlue = "\x1b[34m";
 
 
 
-const { LocalAuth } = pkg;
 
-const SESSION_FILE_PATH: string = "./session.json"
 
-let client: Client | null = null;
 
-let sessionData;
+let client: typeof Client | null = null;
 
-if (fs.existsSync(SESSION_FILE_PATH)){
-    sessionData = require(SESSION_FILE_PATH);
-}
 
     client = new Client({
         authStrategy: new LocalAuth({
@@ -47,13 +48,13 @@ client?.initialize();
 
 const server = createServer();
 
-const io: Server = new Server(server, {
+const io: typeof Server = new Server(server, {
     cors: {
         origin: "*"
     }
 });
 
-io.on("connection", (socket: Socket): void => {
+io.on("connection", (socket: typeof Socket): void => {
 
     console.log(">> Connection Established!");
 
@@ -98,7 +99,7 @@ io.on("connection", (socket: Socket): void => {
 
         client.emit("automation_started");
 
-        client.on("message", async (message: Message): Promise<void> => {
+        client.on("message", async (message: typeof Message): Promise<void> => {
 
             console.log(`${FgGreen} REPLYING WITH ${Reset} ${autoMsg} `);
             await message.reply(autoMsg);
