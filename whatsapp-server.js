@@ -1,4 +1,9 @@
-
+// import { Server } from "socket.io";
+// import type {Socket} from "socket.io";
+// import { createServer } from "node:http";
+// import pkg, { Client } from "whatsapp-web.js";
+// import type { Message } from "whatsapp-web.js";
+// import fs from "fs";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -50,12 +55,18 @@ var FgGreen = "\x1b[32m";
 var FgYellow = "\x1b[33m";
 var FgBlue = "\x1b[34m";
 var client = null;
-client = new Client({
-    authStrategy: new LocalAuth({
-        clientId: "123",
-        dataPath: "./sessions"
-    })
-});
+if (!client) {
+    client = new Client({
+        authStrategy: new LocalAuth({
+            clientId: "123",
+            dataPath: "./sessions",
+        }),
+        puppeteer: {
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            headless: true, // keep it headless in production
+        },
+    });
+}
 client === null || client === void 0 ? void 0 : client.initialize();
 var server = createServer();
 var io = new Server(server, {
