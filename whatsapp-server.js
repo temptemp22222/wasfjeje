@@ -46,7 +46,7 @@ var createServer = require("node:http").createServer;
 var _b = require("whatsapp-web.js"), Client = _b.Client, LocalAuth = _b.LocalAuth, Message = _b.Message;
 var fs = require("fs");
 // PORT ::
-var PORT = 8080;
+var PORT = process.env.PORT ? parseInt(process.env.PORT) : 8080;
 // JUST COLORS:::
 var Reset = "\x1b[0m"; // reset to default
 var Bright = "\x1b[1m"; // bright/bold
